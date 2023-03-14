@@ -3,6 +3,8 @@ version: "3"
 services:
   redis:
     image: redis
+    environment:
+      REDIS_HOST: redis
     networks:
       - back-end
   
@@ -12,13 +14,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgresdb 
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+
     networks:
       - back-end
 
   voteapp:
     build: ./vote
     ports:
-      - 5000:8501
+      - 8501:8501
     environment:
       REDIS_HOST: redis
     depends_on:
@@ -30,14 +35,13 @@ services:
   resultapp:
     build: ./result
     ports:
-      - 5001:3000
+      - 3000:3000
     depends_on:
       - db
     environment:
-      DB_HOST: db
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: postgresdb 
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     networks:
       - back-end
       - front-end
@@ -45,8 +49,11 @@ services:
   workerapp:
     build: ./worker
     depends_on:
-      - redis
       - db
+      - redis
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
     networks:
       - back-end
 

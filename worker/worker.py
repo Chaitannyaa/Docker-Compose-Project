@@ -1,17 +1,25 @@
 import time
 import psycopg2
 import redis
+import os
 
 # Connect to Redis
 r = redis.Redis(host='redis', port=6379, db=0)
 
-# Connect to PostgreSQL
+# Get database configuration from environment variables
+db_host = os.environ['POSTGRES_HOST']
+db_port = os.environ['POSTGRES_PORT']
+db_name = os.environ['POSTGRES_DB']
+db_user = os.environ['POSTGRES_USER']
+db_password = os.environ['POSTGRES_PASSWORD']
+
+# Establish database connection
 conn = psycopg2.connect(
-    host="postgres",
-    database="postgresdb",
-    user="postgres",
-    password="postgres",
-    port="5432"
+    host=db_host,
+    port=db_port,
+    dbname=db_name,
+    user=db_user,
+    password=db_password
 )
 cur = conn.cursor()
 
