@@ -8,7 +8,6 @@ r = redis.Redis(host='redis', port=6379, db=0)
 
 # Get database configuration from environment variables
 db_host = os.environ['POSTGRES_HOST']
-db_port = os.environ['POSTGRES_PORT']
 db_name = os.environ['POSTGRES_DB']
 db_user = os.environ['POSTGRES_USER']
 db_password = os.environ['POSTGRES_PASSWORD']
@@ -16,7 +15,7 @@ db_password = os.environ['POSTGRES_PASSWORD']
 # Establish database connection
 conn = psycopg2.connect(
     host=db_host,
-    port=db_port,
+    port="5432",
     dbname=db_name,
     user=db_user,
     password=db_password
