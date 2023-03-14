@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    networks:
+      - back-end
+  
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgresdb 
+    networks:
+      - back-end
+
+  voteapp:
+    build: ./vote
+    ports:
+      - 5000:8501
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      - redis
+    networks:
+      - back-end
+      - front-end
+
+  resultapp:
+    build: ./result
+    ports:
+      - 5001:3000
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgresdb 
+    networks:
+      - back-end
+      - front-end
+
+  workerapp:
+    build: ./worker
+    depends_on:
+      - redis
+      - db
+    networks:
+      - back-end
+
+networks:
+  front-end:
+  back-end:
