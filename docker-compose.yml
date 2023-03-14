@@ -50,6 +50,9 @@ services:
       - db
       - redis
     environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgresdb 
       POSTGRES_HOST: postgres
       REDIS_HOST: redis
     networks:
