@@ -15,7 +15,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: mydatabase
       POSTGRES_HOST: postgres
     networks:
       - back-end
@@ -66,7 +66,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: mydatabase
       POSTGRES_HOST: postgres
       REDIS_HOST: redis
     networks:
