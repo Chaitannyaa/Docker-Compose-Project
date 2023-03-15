@@ -6,13 +6,20 @@ import redis
 r = redis.Redis(host='redis', port=6379, db=0)
 
 # Connect to PostgreSQL
-conn = psycopg2.connect(
-    host="postgresdb",
-    database="postgresdb",
-    user="postgres",
-    password="mysecretpassword",
-    port="5432"
-)
+while True:
+    try:
+        conn = psycopg2.connect(
+            host="postgresdb",
+            database="postgresdb",
+            user="postgres",
+            password="mysecretpassword",
+            port="5432"
+        )
+        break
+    except psycopg2.OperationalError:
+        print("PostgreSQL not ready, waiting 10 seconds...")
+        time.sleep(10)
+
 cur = conn.cursor()
 
 cur.execute("""
