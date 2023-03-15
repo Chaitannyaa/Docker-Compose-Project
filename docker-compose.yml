@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - mynetwork
+  
+  postgresdb:
+    image: postgres
+    container_name: postgresdb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgresdb
+    ports:
+      - 5432:5432
+    networks:
+      - mynetwork
+  
+  vote:
+    build: ./vote
+    container_name: vote
+    environment:
+      REDIS_HOST: redis
+    ports:
+      - 8501:8501
+    depends_on:
+      - redis
+    networks:
+      - mynetwork
+  
+  worker:
+    build: ./worker
+    container_name: worker
+    environment:
+      REDIS_HOST: redis
+      POSTGRES_HOST: postgresdb
+    depends_on:
+      - postgresdb
+      - redis
+    networks:
+      - mynetwork
+  
+  result:
+    build: ./result
+    container_name: result
+    environment:
+      POSTGRES_HOST: postgresdb
+    ports:
+      - 80:3000
+    depends_on:
+      - postgresdb
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
