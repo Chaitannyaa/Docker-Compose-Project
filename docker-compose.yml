@@ -8,7 +8,13 @@ services:
       - 6379:6379
     networks:
       - mynetwork
-  
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
   postgresdb:
     image: postgres
     container_name: postgresdb
@@ -20,9 +26,15 @@ services:
       - 5432:5432
     networks:
       - mynetwork
-  
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
   vote:
-    build: ./vote
+    image: chaitannyaa/multi_container_app:vote
     container_name: vote
     environment:
       REDIS_HOST: redis
@@ -32,9 +44,10 @@ services:
       - redis
     networks:
       - mynetwork
-  
+
+
   worker:
-    build: ./worker
+    image: chaitannyaa/multi_container_app:worker
     container_name: worker
     environment:
       REDIS_HOST: redis
@@ -44,9 +57,15 @@ services:
       - redis
     networks:
       - mynetwork
-  
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import psycopg2; conn = psycopg2.connect(host='postgresdb', database='postgresdb', user='postgres', password='mysecretpassword', port='5432'); conn.close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
   result:
-    build: ./result
+    image: chaitannyaa/multi_container_app:result
     container_name: result
     environment:
       POSTGRES_HOST: postgresdb
@@ -56,8 +75,13 @@ services:
       - postgresdb
     networks:
       - mynetwork
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 
 networks:
   mynetwork:
     driver: bridge
-
