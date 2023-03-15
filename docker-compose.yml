@@ -7,16 +7,25 @@ services:
       REDIS_HOST: redis
     networks:
       - back-end
-  
+    volumes:
+      - redis-data:/data
+
   db:
     image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgresdb 
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: postgres
     networks:
       - back-end
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   voteapp:
     build: ./vote
@@ -43,6 +52,11 @@ services:
     networks:
       - back-end
       - front-end
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   workerapp:
     build: ./worker
@@ -52,11 +66,20 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgresdb 
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: postgres
       REDIS_HOST: redis
     networks:
       - back-end
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis-data:
+  postgres-data:
 
 networks:
   front-end:
