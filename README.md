@@ -1,6 +1,6 @@
 # Docker-Compose-Project
 
-# This project deployes a multi-container application using docker-compose.yml file.
+# This project deploys a multi-container application using docker-compose.yml file.
 
 ![Capture](https://user-images.githubusercontent.com/117350787/225546388-0df65232-ff89-4c6a-bdb8-13954857d652.PNG)
 
