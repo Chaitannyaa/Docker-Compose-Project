@@ -16,4 +16,4 @@ All the containers are connected to a network named "mynetwork" using the bridge
 
 # License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Chaitannyaa/Docker-Compose-Project/blob/e2b1533cb6dbfa0dad10eeaeccd51015e18afbd0/LICENSE.md) file for details.
