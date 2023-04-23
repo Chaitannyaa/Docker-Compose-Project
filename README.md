@@ -13,3 +13,7 @@
 - Result: a container running a result application on port 80 that communicates with Postgres for retrieving the processed data.
 
 All the containers are connected to a network named "mynetwork" using the bridge driver. The services have dependencies on each other, specified using the "depends_on" keyword, which ensures that the necessary containers are started in the correct order. Additionally, each service has a healthcheck that monitors the container's status and helps ensure that the application is running correctly.
+
+# License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
