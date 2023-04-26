@@ -33,9 +33,9 @@ Use clear, concise and easy-to-read code.
 
 ## How to Contribute
 
-Fork the repository and create your own branch from main.
-Make your changes and Test your changes thoroughly to ensure they work as intended.
-Create a pull request with a clear description of your changes.
+- Fork the repository and create your own branch from main.
+- Make your changes and Test your changes thoroughly to ensure they work as intended.
+- Create a pull request with a clear description of your changes.
 
 # License
 
